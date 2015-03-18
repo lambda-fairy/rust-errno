@@ -5,4 +5,12 @@ version = "0.0.1"
 authors = ["Chris Wong <lambda.fairy@gmail.com>"]
 
 [dependencies]
-libc = "0.1"
+libc = "*"
+
+[target.i686-pc-windows-gnu.dependencies]
+winapi = "*"
+kernel32-sys = "*"
+
+[target.x86_64-pc-windows-gnu.dependencies]
+winapi = "*"
+kernel32-sys = "*"

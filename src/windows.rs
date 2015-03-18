@@ -14,6 +14,7 @@
 
 use std::fmt;
 use libc::{self, DWORD};
+use kernel32;
 
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
 pub struct Errno(pub DWORD);
@@ -27,12 +28,12 @@ impl fmt::Display for Errno {
 
 pub fn errno() -> Errno {
     unsafe {
-        Errno(libc::GetLastError())
+        Errno(kernel32::GetLastError())
     }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
     unsafe {
-        libc::SetLastError(errno)
+        kernel32::SetLastError(errno)
     }
 }
