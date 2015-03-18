@@ -13,7 +13,7 @@
 // except according to those terms.
 
 use std::fmt;
-use libc::types::os::arch::extra::DWORD;
+use libc::{self, DWORD};
 
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
 pub struct Errno(pub DWORD);
