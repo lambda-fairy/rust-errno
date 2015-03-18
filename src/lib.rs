@@ -5,11 +5,8 @@ extern crate libc;
 #[cfg(unix)] mod unix;
 #[cfg(unix)] pub use unix::{Errno, errno, set_errno};
 
-// TODO: Windows implementation
-/*
 #[cfg(windows)] mod windows;
 #[cfg(windows)] pub use windows::{Errno, errno, set_errno};
-*/
 
 #[test]
 fn it_works() {
