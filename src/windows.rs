@@ -13,7 +13,7 @@
 // except according to those terms.
 
 use std::fmt;
-use libc::{self, DWORD};
+use libc::DWORD;
 use kernel32;
 
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
