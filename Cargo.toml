@@ -1,0 +1,8 @@
+[package]
+
+name = "errno"
+version = "0.0.1"
+authors = ["Chris Wong <lambda.fairy@gmail.com>"]
+
+[dependencies]
+libc = "0.1"
