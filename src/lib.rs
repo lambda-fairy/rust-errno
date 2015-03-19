@@ -1,4 +1,4 @@
-/// Wrappers around `errno`.
+//! Cross-platform interface to the `errno` variable.
 
 extern crate libc;
 #[cfg(windows)] extern crate winapi;
