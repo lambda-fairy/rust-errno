@@ -17,8 +17,6 @@ use std::fmt;
 use std::str;
 use libc::{self, c_char, c_int};
 
-const TMPBUF_SZ: usize = 128;
-
 /// Wraps a platform-specific error code.
 ///
 /// The `Display` instance maps the code to a human-readable string. It
@@ -32,7 +30,7 @@ pub struct Errno(c_int);
 
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        let mut buf = [0 as c_char; TMPBUF_SZ];
+        let mut buf = [0 as c_char; 1024];
         unsafe {
             if strerror_r(self.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
                 panic!("strerror_r failure");
