@@ -19,7 +19,14 @@ use libc::{self, c_char, c_int};
 
 const TMPBUF_SZ: usize = 128;
 
-/// Wraps an errno.
+/// Wraps a platform-specific error code.
+///
+/// The `Display` instance maps the code to a human-readable string. It
+/// calls [`strerror_r`][1] in POSIX, and [`FormatMessageW`][2] on
+/// Windows.
+///
+/// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
+/// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
 pub struct Errno(c_int);
 
