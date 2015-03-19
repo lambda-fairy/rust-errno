@@ -1,6 +1,7 @@
 /// Wrappers around `errno`.
 
 extern crate libc;
+#[cfg(windows)] extern crate winapi;
 #[cfg(windows)] extern crate "kernel32-sys" as kernel32;
 
 #[cfg(unix)] mod unix;
