@@ -4,6 +4,12 @@ name = "errno"
 version = "0.0.1"
 authors = ["Chris Wong <lambda.fairy@gmail.com>"]
 
+license = "MIT/Apache-2.0"
+repository = "https://github.com/lfairy/rust-errno"
+description = """
+Cross-platform interface to the `errno` variable.
+"""
+
 [dependencies]
 libc = "*"
 
