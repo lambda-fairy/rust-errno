@@ -20,20 +20,25 @@ use libc::{self, c_char, c_int};
 /// Wraps a platform-specific error code.
 ///
 /// The `Display` instance maps the code to a human-readable string. It
-/// calls [`strerror_r`][1] in POSIX, and [`FormatMessageW`][2] on
+/// calls [`strerror_r`][1] under POSIX, and [`FormatMessageW`][2] on
 /// Windows.
 ///
 /// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
 /// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
-pub struct Errno(c_int);
+pub struct Errno(pub c_int);
 
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         let mut buf = [0 as c_char; 1024];
         unsafe {
             if strerror_r(self.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
-                panic!("strerror_r failure");
+                let Errno(fm_err) = errno();
+                if fm_err != libc::ERANGE {
+                    return write!(fmt,
+                                  "OS Error {} (strerror_r returned error {})",
+                                  self.0, fm_err);
+                }
             }
         }
         let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
