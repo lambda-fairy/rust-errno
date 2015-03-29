@@ -47,6 +47,7 @@ impl fmt::Display for Errno {
             }
 
             let end = buf.iter().position(|&i| i == 0).unwrap_or(buf.len());
+            // Can we skip this allocation?
             let msg = String::from_utf16(&buf[..end]);
             match msg {
                 Ok(msg) => fmt.write_str(&msg),
