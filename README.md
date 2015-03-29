@@ -16,3 +16,23 @@ Add to your `Cargo.toml`:
 errno = "*"
 libc = "*"
 ```
+
+
+## Examples
+
+```rust
+extern crate errno;
+use errno::{Errno, errno, set_errno};
+
+// Get the current value of errno
+let e = errno();
+
+// Set the current value of errno
+set_errno(e);
+
+// Extract the error code as an i32
+let code = e.0 as i32;
+
+// Display a human-friendly error message
+println!("Error {}: {}", code, e);
+```
