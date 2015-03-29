@@ -2,7 +2,7 @@
 
 extern crate libc;
 #[cfg(windows)] extern crate winapi;
-#[cfg(windows)] extern crate "kernel32-sys" as kernel32;
+#[cfg(windows)] extern crate kernel32_sys as kernel32;
 
 #[cfg(unix)] mod unix;
 #[cfg(unix)] pub use unix::{Errno, errno, set_errno};
