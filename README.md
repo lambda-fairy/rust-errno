@@ -1,4 +1,4 @@
-# errno [![Build status](https://img.shields.io/travis/lfairy/rust-errno.svg)](http://travis-ci.org/lfairy/errno) [![Build status](https://ci.appveyor.com/api/projects/status/0fgngg808u7xwto8?svg=true)](https://ci.appveyor.com/project/lfairy/rust-errno) [![Cargo](https://img.shields.io/crates/v/errno.svg)](https://crates.io/crates/errno)
+# errno [![Build status](https://img.shields.io/travis/lfairy/rust-errno.svg)](http://travis-ci.org/lfairy/rust-errno) [![Build status](https://ci.appveyor.com/api/projects/status/0fgngg808u7xwto8?svg=true)](https://ci.appveyor.com/project/lfairy/rust-errno) [![Cargo](https://img.shields.io/crates/v/errno.svg)](https://crates.io/crates/errno)
 
 Cross-platform interface to the [`errno`][errno] variable.
 
