@@ -16,8 +16,8 @@ libc = "*"
 
 [target.i686-pc-windows-gnu.dependencies]
 winapi = "*"
-kernel32-sys = "*"
+kernel32-sys = "0.1"
 
 [target.x86_64-pc-windows-gnu.dependencies]
 winapi = "*"
-kernel32-sys = "*"
+kernel32-sys = "0.1"
