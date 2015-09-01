@@ -1,6 +1,6 @@
 //! Cross-platform interface to the `errno` variable.
 
-extern crate libc;
+#[cfg(unix)] extern crate libc;
 #[cfg(windows)] extern crate winapi;
 #[cfg(windows)] extern crate kernel32;
 

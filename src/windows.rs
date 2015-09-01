@@ -14,9 +14,8 @@
 
 use std::fmt;
 use std::ptr;
-use libc::{DWORD, WCHAR};
 use kernel32;
-use winapi::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
+use winapi::{DWORD, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, WCHAR};
 
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
 pub struct Errno(pub DWORD);
