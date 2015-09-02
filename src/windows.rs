@@ -38,18 +38,20 @@ impl fmt::Display for Errno {
                                                buf.len() as DWORD,
                                                ptr::null_mut());
             if res == 0 {
-                // Sometimes FormatMessageW can fail e.g. system doesn't like langId
+                // Sometimes FormatMessageW can fail e.g. system doesn't like lang_id
                 let Errno(fm_err) = errno();
                 return write!(fmt,
                               "OS Error {} (FormatMessageW returned error {})",
                               self.0, fm_err);
             }
 
-            let end = buf.iter().position(|&i| i == 0).unwrap_or(buf.len());
-            // Can we skip this allocation?
-            let msg = String::from_utf16(&buf[..end]);
-            match msg {
-                Ok(msg) => fmt.write_str(&msg),
+            match String::from_utf16(&buf[..res as usize]) {
+                Ok(mut msg) => {
+                    // Trim trailing CRLF inserted by FormatMessageW
+                    let len = msg.trim_right().len();
+                    msg.truncate(len);
+                    fmt.write_str(&msg)
+                },
                 Err(..) =>
                     write!(fmt,
                            "OS Error {} (FormatMessageW returned invalid UTF-16)",
