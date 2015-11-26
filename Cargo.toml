@@ -14,4 +14,4 @@ Cross-platform interface to the `errno` variable.
 [dependencies]
 libc = "*"
 winapi = "*"
-kernel32-sys = "0.1"
+kernel32-sys = "0.2"
