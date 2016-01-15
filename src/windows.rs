@@ -46,11 +46,9 @@ impl fmt::Display for Errno {
             }
 
             match String::from_utf16(&buf[..res as usize]) {
-                Ok(mut msg) => {
+                Ok(msg) => {
                     // Trim trailing CRLF inserted by FormatMessageW
-                    let len = msg.trim_right().len();
-                    msg.truncate(len);
-                    fmt.write_str(&msg)
+                    fmt.write_str(msg.trim_right())
                 },
                 Err(..) =>
                     write!(fmt,
