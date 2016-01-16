@@ -16,3 +16,16 @@ fn it_works() {
     set_errno(x);
     let _ = x.to_string();
 }
+
+#[test]
+fn check_description() {
+    let expect = if cfg!(windows) {
+        "Incorrect function."
+    } else {
+        "Operation not permitted"
+    };
+
+    set_errno(Errno(1));
+
+    assert_eq!(errno().to_string(), expect);
+}
