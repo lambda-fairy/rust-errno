@@ -45,16 +45,9 @@ impl fmt::Display for Errno {
                               self.0, fm_err);
             }
 
-            match String::from_utf16(&buf[..res as usize]) {
-                Ok(msg) => {
-                    // Trim trailing CRLF inserted by FormatMessageW
-                    fmt.write_str(msg.trim_right())
-                },
-                Err(..) =>
-                    write!(fmt,
-                           "OS Error {} (FormatMessageW returned invalid UTF-16)",
-                           self.0),
-            }
+            let msg = String::from_utf16_lossy(&buf[..res as usize]);
+            // Trim trailing CRLF inserted by FormatMessageW
+            fmt.write_str(msg.trim_right())
         }
     }
 }
