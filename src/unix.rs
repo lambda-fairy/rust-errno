@@ -42,7 +42,7 @@ impl fmt::Display for Errno {
             }
         }
         let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-        fmt.write_str(str::from_utf8(c_str.to_bytes()).unwrap())
+        fmt.write_str(&String::from_utf8_lossy(c_str.to_bytes()))
     }
 }
 
