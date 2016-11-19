@@ -25,7 +25,7 @@ use libc::{self, c_char, c_int};
 ///
 /// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
 /// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
-#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct Errno(pub c_int);
 
 impl Errno {

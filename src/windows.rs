@@ -17,7 +17,7 @@ use std::ptr;
 use kernel32;
 use winapi::{DWORD, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, WCHAR};
 
-#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct Errno(pub DWORD);
 
 impl Errno {
