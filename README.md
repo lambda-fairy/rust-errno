@@ -2,7 +2,7 @@
 
 Cross-platform interface to the [`errno`][errno] variable.
 
-Documentation is available at <https://lambda.xyz/rust-errno/doc/errno/>
+Documentation is available at <https://docs.rs/errno>.
 
 [errno]: https://en.wikipedia.org/wiki/Errno.h
 

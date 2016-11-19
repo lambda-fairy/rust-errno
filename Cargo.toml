@@ -5,7 +5,7 @@ version = "0.1.8"
 authors = ["Chris Wong <lambda.fairy@gmail.com>"]
 
 license = "MIT/Apache-2.0"
-documentation = "https://lambda.xyz/rust-errno/doc/errno/"
+documentation = "https://docs.rs/errno"
 repository = "https://github.com/lfairy/rust-errno"
 description = """
 Cross-platform interface to the `errno` variable.
