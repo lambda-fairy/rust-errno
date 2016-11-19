@@ -17,11 +17,13 @@ use std::ptr;
 use kernel32;
 use winapi::{DWORD, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, WCHAR};
 
-#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
+#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Errno(pub DWORD);
 
-impl fmt::Display for Errno {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+impl Errno {
+    fn with_description<F, T>(self, callback: F) -> T where
+        F: FnOnce(Result<&str, Errno>) -> T
+    {
         // This value is calculated from the macro
         // MAKELANGID(LANG_SYSTEM_DEFAULT, SUBLANG_SYS_DEFAULT)
         let lang_id = 0x0800 as DWORD;
@@ -39,16 +41,36 @@ impl fmt::Display for Errno {
                                                ptr::null_mut());
             if res == 0 {
                 // Sometimes FormatMessageW can fail e.g. system doesn't like lang_id
-                let Errno(fm_err) = errno();
-                return write!(fmt,
-                              "OS Error {} (FormatMessageW returned error {})",
-                              self.0, fm_err);
+                let fm_err = errno();
+                return callback(Err(fm_err));
             }
 
             let msg = String::from_utf16_lossy(&buf[..res as usize]);
             // Trim trailing CRLF inserted by FormatMessageW
-            fmt.write_str(msg.trim_right())
+            callback(Ok(msg.trim_right()))
         }
+    }
+}
+
+impl fmt::Debug for Errno {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        self.with_description(|desc| {
+            fmt.debug_struct("Errno")
+                .field("code", &self.0)
+                .field("description", &desc.ok())
+                .finish()
+        })
+    }
+}
+
+impl fmt::Display for Errno {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        self.with_description(|desc| match desc {
+            Ok(desc) => fmt.write_str(desc),
+            Err(fm_err) => write!(
+                fmt, "OS error {} (FormatMessageW returned error {})",
+                self.0, fm_err.0),
+        })
     }
 }
 

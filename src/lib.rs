@@ -28,4 +28,7 @@ fn check_description() {
     set_errno(Errno(1));
 
     assert_eq!(errno().to_string(), expect);
+    assert_eq!(
+        format!("{:?}", errno()),
+        format!("Errno {{ code: 1, description: Some({:?}) }}", expect));
 }

@@ -25,24 +25,46 @@ use libc::{self, c_char, c_int};
 ///
 /// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
 /// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
-#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Debug)]
+#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd)]
 pub struct Errno(pub c_int);
 
-impl fmt::Display for Errno {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+impl Errno {
+    fn with_description<F, T>(self, callback: F) -> T where
+        F: FnOnce(Result<&str, Errno>) -> T
+    {
         let mut buf = [0 as c_char; 1024];
         unsafe {
             if strerror_r(self.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
-                let Errno(fm_err) = errno();
-                if fm_err != libc::ERANGE {
-                    return write!(fmt,
-                                  "OS Error {} (strerror_r returned error {})",
-                                  self.0, fm_err);
+                let fm_err = errno();
+                if fm_err != Errno(libc::ERANGE) {
+                    return callback(Err(fm_err));
                 }
             }
         }
         let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-        fmt.write_str(&String::from_utf8_lossy(c_str.to_bytes()))
+        callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
+    }
+}
+
+impl fmt::Debug for Errno {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        self.with_description(|desc| {
+            fmt.debug_struct("Errno")
+                .field("code", &self.0)
+                .field("description", &desc.ok())
+                .finish()
+        })
+    }
+}
+
+impl fmt::Display for Errno {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        self.with_description(|desc| match desc {
+            Ok(desc) => fmt.write_str(&desc),
+            Err(fm_err) => write!(
+                fmt, "OS error {} (strerror_r returned error {})",
+                self.0, fm_err.0),
+        })
     }
 }
 
