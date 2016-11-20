@@ -31,7 +31,7 @@ let e = errno();
 set_errno(e);
 
 // Extract the error code as an i32
-let code = e.0 as i32;
+let code = e.0;
 
 // Display a human-friendly error message
 println!("Error {}: {}", code, e);
