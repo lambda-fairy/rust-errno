@@ -13,69 +13,34 @@
 // except according to those terms.
 
 use std::ffi::CStr;
-use std::fmt;
-use std::str;
 use libc::{self, c_char, c_int};
 
-/// Wraps a platform-specific error code.
-///
-/// The `Display` instance maps the code to a human-readable string. It
-/// calls [`strerror_r`][1] under POSIX, and [`FormatMessageW`][2] on
-/// Windows.
-///
-/// [1]: http://pubs.opengroup.org/onlinepubs/009695399/functions/strerror.html
-/// [2]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms679351%28v=vs.85%29.aspx
-#[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
-pub struct Errno(pub c_int);
+use Errno;
 
-impl Errno {
-    fn with_description<F, T>(self, callback: F) -> T where
-        F: FnOnce(Result<&str, Errno>) -> T
-    {
-        let mut buf = [0 as c_char; 1024];
-        unsafe {
-            if strerror_r(self.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
-                let fm_err = errno();
-                if fm_err != Errno(libc::ERANGE) {
-                    return callback(Err(fm_err));
-                }
+pub fn with_description<F, T>(err: Errno, callback: F) -> T where
+    F: FnOnce(Result<&str, Errno>) -> T
+{
+    let mut buf = [0 as c_char; 1024];
+    unsafe {
+        if strerror_r(err.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
+            let fm_err = errno();
+            if fm_err != Errno(libc::ERANGE) {
+                return callback(Err(fm_err));
             }
         }
-        let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-        callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
     }
+    let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
+    callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
 }
 
-impl fmt::Debug for Errno {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        self.with_description(|desc| {
-            fmt.debug_struct("Errno")
-                .field("code", &self.0)
-                .field("description", &desc.ok())
-                .finish()
-        })
-    }
-}
+pub const STRERROR_NAME: &'static str = "strerror_r";
 
-impl fmt::Display for Errno {
-    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
-        self.with_description(|desc| match desc {
-            Ok(desc) => fmt.write_str(&desc),
-            Err(fm_err) => write!(
-                fmt, "OS error {} (strerror_r returned error {})",
-                self.0, fm_err.0),
-        })
-    }
-}
-
-/// Returns the platform-specific value of `errno`.
 pub fn errno() -> Errno {
     unsafe {
         Errno(*errno_location())
     }
 }
 
-/// Sets the platform-specific value of `errno`.
 pub fn set_errno(Errno(errno): Errno) {
     unsafe {
         *errno_location() = errno;
