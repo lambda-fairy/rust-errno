@@ -31,7 +31,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
         let res = kernel32::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
                                            FORMAT_MESSAGE_IGNORE_INSERTS,
                                            ptr::null_mut(),
-                                           err.0,
+                                           err.0 as DWORD,
                                            lang_id,
                                            buf.as_mut_ptr(),
                                            buf.len() as DWORD,
@@ -52,12 +52,12 @@ pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {
     unsafe {
-        Errno(kernel32::GetLastError())
+        Errno(kernel32::GetLastError() as i32)
     }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
     unsafe {
-        kernel32::SetLastError(errno)
+        kernel32::SetLastError(errno as DWORD)
     }
 }
