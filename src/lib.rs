@@ -4,9 +4,17 @@
 #[cfg(windows)] extern crate winapi;
 #[cfg(windows)] extern crate kernel32;
 
+// FIXME(#10): Rust < 1.11 doesn't support cfg_attr on path
+/*
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
 mod sys;
+*/
+
+#[cfg(unix)] mod unix;
+#[cfg(unix)] mod sys { pub use unix::*; }
+#[cfg(windows)] mod windows;
+#[cfg(windows)] mod sys { pub use windows::*; }
 
 use std::fmt;
 
