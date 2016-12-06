@@ -1,3 +1,6 @@
 language: rust
+rust:
+  - stable
+  - 1.8.0
 script:
-  - cargo test --verbose
+  - cargo test
