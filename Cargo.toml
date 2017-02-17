@@ -18,4 +18,5 @@ winapi = "0.2"
 kernel32-sys = "0.2"
 
 [badges]
+appveyor = { repository = "lfairy/rust-errno" }
 travis-ci = { repository = "lfairy/rust-errno" }
