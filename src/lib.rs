@@ -51,6 +51,12 @@ impl fmt::Display for Errno {
     }
 }
 
+impl Into<i32> for Errno {
+    fn into(self) -> i32 {
+        self.0
+    }
+}
+
 /// Returns the platform-specific value of `errno`.
 pub fn errno() -> Errno {
     sys::errno()
