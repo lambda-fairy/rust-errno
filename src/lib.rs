@@ -17,6 +17,7 @@ mod sys;
 #[cfg(windows)] mod sys { pub use windows::*; }
 
 use std::fmt;
+use std::io;
 
 /// Wraps a platform-specific error code.
 ///
@@ -57,6 +58,12 @@ impl Into<i32> for Errno {
     }
 }
 
+impl From<Errno> for io::Error {
+    fn from(errno: Errno) -> Self {
+        io::Error::from_raw_os_error(errno.0)
+    }
+}
+
 /// Returns the platform-specific value of `errno`.
 pub fn errno() -> Errno {
     sys::errno()
@@ -88,4 +95,13 @@ fn check_description() {
     assert_eq!(
         format!("{:?}", errno()),
         format!("Errno {{ code: 1, description: Some({:?}) }}", expect));
+}
+
+#[test]
+fn check_error_into_errno() {
+    const ERROR_CODE: i32 = 1;
+
+    let error = io::Error::from_raw_os_error(ERROR_CODE);
+    let new_error: io::Error = Errno(ERROR_CODE).into();
+    assert_eq!(error.kind(), new_error.kind());
 }
