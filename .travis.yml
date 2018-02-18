@@ -5,5 +5,10 @@ os:
 rust:
   - stable
   - 1.8.0
+matrix:
+  exclude:
+    # https://github.com/rust-lang/rust/issues/34674
+    - os: osx
+      rust: 1.8.0
 script:
   - cargo test
