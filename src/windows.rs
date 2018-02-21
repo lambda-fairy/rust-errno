@@ -13,8 +13,9 @@
 // except according to those terms.
 
 use std::ptr;
-use kernel32;
-use winapi::{DWORD, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, WCHAR};
+use winapi::shared::minwindef::DWORD;
+use winapi::shared::ntdef::WCHAR;
+use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
 
 use Errno;
 
@@ -28,7 +29,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     let mut buf = [0 as WCHAR; 2048];
 
     unsafe {
-        let res = kernel32::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
+        let res = ::winapi::um::winbase::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
                                            FORMAT_MESSAGE_IGNORE_INSERTS,
                                            ptr::null_mut(),
                                            err.0 as DWORD,
@@ -52,12 +53,12 @@ pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {
     unsafe {
-        Errno(kernel32::GetLastError() as i32)
+        Errno(::winapi::um::errhandlingapi::GetLastError() as i32)
     }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
     unsafe {
-        kernel32::SetLastError(errno as DWORD)
+        ::winapi::um::errhandlingapi::SetLastError(errno as DWORD)
     }
 }

@@ -2,7 +2,6 @@
 
 #[cfg(unix)] extern crate libc;
 #[cfg(windows)] extern crate winapi;
-#[cfg(windows)] extern crate kernel32;
 
 // FIXME(#10): Rust < 1.11 doesn't support cfg_attr on path
 /*

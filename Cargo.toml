@@ -14,8 +14,7 @@ categories = ["os"]
 libc = "0.2"
 
 [target.'cfg(windows)'.dependencies]
-winapi = "0.2"
-kernel32-sys = "0.2"
+winapi = { version = "0.3", features = ["errhandlingapi", "minwindef", "ntdef", "winbase"] }
 
 [badges]
 appveyor = { repository = "lfairy/rust-errno" }
