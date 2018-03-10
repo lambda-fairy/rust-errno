@@ -56,6 +56,8 @@ extern {
                link_name = "__dfly_error")]
     #[cfg_attr(any(target_os = "openbsd", target_os = "bitrig", target_os = "android"),
                link_name = "__errno")]
+    #[cfg_attr(target_os = "solaris",
+               link_name = "___errno")]
     #[cfg_attr(target_os = "linux",
                link_name = "__errno_location")]
     fn errno_location() -> *mut c_int;
