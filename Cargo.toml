@@ -16,6 +16,9 @@ libc = "0.2"
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["errhandlingapi", "minwindef", "ntdef", "winbase"] }
 
+[target.'cfg(target_os="dragonfly")'.dependencies]
+errno-dragonfly = "0.1.1"
+
 [badges]
 appveyor = { repository = "lfairy/rust-errno" }
 travis-ci = { repository = "lfairy/rust-errno" }

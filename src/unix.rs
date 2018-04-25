@@ -14,6 +14,8 @@
 
 use std::ffi::CStr;
 use libc::{self, c_char, c_int};
+#[cfg(target_os = "dragonfly")]
+use errno_dragonfly::errno_location;
 
 use Errno;
 
@@ -48,12 +50,11 @@ pub fn set_errno(Errno(errno): Errno) {
 }
 
 extern {
+    #[cfg(not(target_os = "dragonfly"))]
     #[cfg_attr(any(target_os = "macos",
                    target_os = "ios",
                    target_os = "freebsd"),
                link_name = "__error")]
-    #[cfg_attr(target_os = "dragonfly",
-               link_name = "__dfly_error")]
     #[cfg_attr(any(target_os = "openbsd", target_os = "bitrig", target_os = "android"),
                link_name = "__errno")]
     #[cfg_attr(target_os = "solaris",
