@@ -31,7 +31,8 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
             }
         }
     }
-    let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
+    // note: c_char might be signed on some platforms, so the cast to unsigned is required
+    let c_str = unsafe { CStr::from_ptr(buf.as_ptr() as *const u8) };
     callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
 }
 
