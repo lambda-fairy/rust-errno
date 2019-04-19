@@ -1,8 +1,11 @@
 //! Cross-platform interface to the `errno` variable.
 
+#![cfg_attr(target_os = "wasi", feature(thread_local))]
+
 #[cfg(unix)] extern crate libc;
 #[cfg(windows)] extern crate winapi;
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
+#[cfg(target_os = "wasi")] extern crate libc;
 
 // FIXME(#10): Rust < 1.11 doesn't support cfg_attr on path
 /*
@@ -15,6 +18,8 @@ mod sys;
 #[cfg(unix)] mod sys { pub use unix::*; }
 #[cfg(windows)] mod windows;
 #[cfg(windows)] mod sys { pub use windows::*; }
+#[cfg(target_os = "wasi")] mod wasi;
+#[cfg(target_os = "wasi")] mod sys { pub use wasi::*; }
 
 use std::fmt;
 use std::io;
@@ -85,6 +90,8 @@ fn it_works() {
 fn check_description() {
     let expect = if cfg!(windows) {
         "Incorrect function."
+    } else if cfg!(target_os = "wasi") {
+        "Argument list too long"
     } else {
         "Operation not permitted"
     };
