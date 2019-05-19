@@ -10,5 +10,19 @@ matrix:
     # https://github.com/rust-lang/rust/issues/34674
     - os: osx
       rust: 1.13.0
+  include:
+    - rust: nightly
+      install: >
+          CARGO_TARGET_DIR=$HOME/wasmtime-target
+          cargo install
+          --git https://github.com/CraneStation/wasmtime
+          --bin wasmtime
+          wasmtime
+      script: >
+          CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime
+          cargo test --target wasm32-wasi
 script:
   - cargo test
+cache:
+  directories:
+    - $HOME/wasmtime-target
