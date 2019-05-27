@@ -42,6 +42,7 @@ pub fn errno() -> Errno {
 }
 
 pub fn set_errno(Errno(new_errno): Errno) {
+    // libc_errno is thread-local, so simply assign to it.
     unsafe {
         libc_errno = new_errno;
     }
