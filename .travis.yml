@@ -25,6 +25,8 @@ matrix:
           cargo test --target wasm32-wasi
 script:
   - cargo test
+# Cache the wasmtime-target directory so that we don't rebuild it for each
+# commit.
 cache:
   directories:
     - $HOME/wasmtime-target
