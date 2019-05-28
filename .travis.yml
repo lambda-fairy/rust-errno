@@ -10,5 +10,25 @@ matrix:
     # https://github.com/rust-lang/rust/issues/34674
     - os: osx
       rust: 1.13.0
+  include:
+    # Add a rule to test the wasm32-wasi target, which is currently only supported
+    # with Rust nightly.
+    - rust: nightly
+      install:
+        - >
+          CARGO_TARGET_DIR=$HOME/wasmtime-target
+          cargo install
+          --git https://github.com/CraneStation/wasmtime
+          --bin wasmtime
+          wasmtime
+        - rustup target add wasm32-wasi --toolchain nightly
+      script: >
+          CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime
+          cargo test --target wasm32-wasi
 script:
   - cargo test
+# Cache the wasmtime-target directory so that we don't rebuild it for each
+# commit.
+cache:
+  directories:
+    - $HOME/wasmtime-target
