@@ -55,7 +55,10 @@ extern {
                    target_os = "ios",
                    target_os = "freebsd"),
                link_name = "__error")]
-    #[cfg_attr(any(target_os = "openbsd", target_os = "bitrig", target_os = "android"),
+    #[cfg_attr(any(target_os = "openbsd",
+                   target_os = "netbsd",
+                   target_os = "bitrig",
+                   target_os = "android"),
                link_name = "__errno")]
     #[cfg_attr(target_os = "solaris",
                link_name = "___errno")]
