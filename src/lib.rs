@@ -7,19 +7,10 @@
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
 #[cfg(target_os = "wasi")] extern crate libc;
 
-// FIXME(#10): Rust < 1.11 doesn't support cfg_attr on path
-/*
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
+#[cfg_attr(target_os = "wasi", path = "wasi.rs")]
 mod sys;
-*/
-
-#[cfg(unix)] mod unix;
-#[cfg(unix)] mod sys { pub use unix::*; }
-#[cfg(windows)] mod windows;
-#[cfg(windows)] mod sys { pub use windows::*; }
-#[cfg(target_os = "wasi")] mod wasi;
-#[cfg(target_os = "wasi")] mod sys { pub use wasi::*; }
 
 use std::fmt;
 use std::io;
