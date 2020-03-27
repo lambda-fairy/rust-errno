@@ -6,7 +6,7 @@ authors = ["Chris Wong <lambda.fairy@gmail.com>"]
 
 license = "MIT/Apache-2.0"
 documentation = "https://docs.rs/errno"
-repository = "https://github.com/lfairy/rust-errno"
+repository = "https://github.com/lambda-fairy/rust-errno"
 description = "Cross-platform interface to the `errno` variable."
 categories = ["os"]
 
@@ -24,4 +24,4 @@ libc = "0.2"
 
 [badges]
 appveyor = { repository = "lfairy/rust-errno" }
-travis-ci = { repository = "lfairy/rust-errno" }
+travis-ci = { repository = "lambda-fairy/rust-errno" }
