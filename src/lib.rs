@@ -1,4 +1,21 @@
 //! Cross-platform interface to the `errno` variable.
+//!
+//! # Example
+//! ```edition2018
+//! use errno::{self, Errno, set_errno};
+//!
+//! // Get the current value of errno
+//! let e = errno();
+//!
+//! // Set the current value of errno
+//! set_errno(e);
+//!
+//! // Extract the error code as an i32
+//! let code = e.0;
+//!
+//! // Display a human-friendly error message
+//! println!("Error {}: {}", code, e);
+//! ```
 
 #![cfg_attr(target_os = "wasi", feature(thread_local))]
 
