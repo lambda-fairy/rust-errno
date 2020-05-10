@@ -1,7 +1,7 @@
 //! Cross-platform interface to the `errno` variable.
 //!
-//! # Example
-//! ```edition2018
+//! # Examples
+//! ```
 //! use errno::{self, Errno, set_errno};
 //!
 //! // Get the current value of errno
