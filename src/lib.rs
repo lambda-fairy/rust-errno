@@ -2,7 +2,7 @@
 //!
 //! # Examples
 //! ```
-//! use errno::{self, Errno, set_errno};
+//! use errno::{Errno, errno, set_errno};
 //!
 //! // Get the current value of errno
 //! let e = errno();
