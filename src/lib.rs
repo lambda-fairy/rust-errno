@@ -81,6 +81,8 @@ fn it_works() {
 fn check_description() {
     let expect = if cfg!(windows) {
         "Incorrect function."
+    } else if cfg!(target_os = "illumos") {
+        "Not owner"
     } else if cfg!(target_os = "wasi") {
         "Argument list too long"
     } else {

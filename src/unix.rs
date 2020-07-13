@@ -60,7 +60,8 @@ extern {
                    target_os = "bitrig",
                    target_os = "android"),
                link_name = "__errno")]
-    #[cfg_attr(target_os = "solaris",
+    #[cfg_attr(any(target_os = "solaris",
+                   target_os = "illumos"),
                link_name = "___errno")]
     #[cfg_attr(target_os = "linux",
                link_name = "__errno_location")]
