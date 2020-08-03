@@ -23,10 +23,12 @@
 #[cfg(windows)] extern crate winapi;
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
 #[cfg(target_os = "wasi")] extern crate libc;
+#[cfg(target_os = "hermit")] extern crate libc;
 
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
 #[cfg_attr(target_os = "wasi", path = "wasi.rs")]
+#[cfg_attr(target_os = "hermit", path = "hermit.rs")]
 mod sys;
 
 use std::fmt;
