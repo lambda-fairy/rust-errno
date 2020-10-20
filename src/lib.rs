@@ -33,6 +33,7 @@ mod sys;
 
 use std::fmt;
 use std::io;
+use std::error::Error;
 
 /// Wraps a platform-specific error code.
 ///
@@ -72,6 +73,8 @@ impl Into<i32> for Errno {
         self.0
     }
 }
+
+impl Error for Errno {}
 
 impl From<Errno> for io::Error {
     fn from(errno: Errno) -> Self {
