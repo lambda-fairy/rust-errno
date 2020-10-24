@@ -33,6 +33,7 @@ mod sys;
 
 use std::fmt;
 use std::io;
+use std::error::Error;
 
 /// Wraps a platform-specific error code.
 ///
@@ -70,6 +71,14 @@ impl fmt::Display for Errno {
 impl Into<i32> for Errno {
     fn into(self) -> i32 {
         self.0
+    }
+}
+
+impl Error for Errno {
+    // TODO: Remove when MSRV >= 1.27
+    #[allow(deprecated)]
+    fn description(&self) -> &str {
+        "system error"
     }
 }
 
