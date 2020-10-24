@@ -74,7 +74,13 @@ impl Into<i32> for Errno {
     }
 }
 
-impl Error for Errno {}
+impl Error for Errno {
+    // TODO: Remove when MSRV >= 1.27
+    #[allow(deprecated)]
+    fn description(&self) -> &str {
+        "system error"
+    }
+}
 
 impl From<Errno> for io::Error {
     fn from(errno: Errno) -> Self {
