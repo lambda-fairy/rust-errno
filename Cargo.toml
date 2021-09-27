@@ -10,20 +10,26 @@ repository = "https://github.com/lambda-fairy/rust-errno"
 description = "Cross-platform interface to the `errno` variable."
 categories = ["os"]
 
+[features]
+default = ["std"]
+std = ["libc/default"]
+
 [target.'cfg(unix)'.dependencies]
-libc = "0.2"
+cstr_core = { version = "0.2.4", default-features = false }
+libc = { version = "0.2", default-features = false }
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["errhandlingapi", "minwindef", "ntdef", "winbase"] }
 
 [target.'cfg(target_os="dragonfly")'.dependencies]
-errno-dragonfly = "0.1.1"
+errno-dragonfly = "0.1.2"
 
 [target.'cfg(target_os="wasi")'.dependencies]
-libc = "0.2"
+cstr_core = { version = "0.2.4", default-features = false }
+libc = { version = "0.2", default-features = false }
 
 [target.'cfg(target_os="hermit")'.dependencies]
-libc = "0.2"
+libc = { version = "0.2", default-features = false }
 
 [badges]
 travis-ci = { repository = "lambda-fairy/rust-errno" }

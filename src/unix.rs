@@ -12,7 +12,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::ffi::CStr;
+use alloc::string::String;
+use cstr_core::CStr;
 use libc::{self, c_char, c_int};
 #[cfg(target_os = "dragonfly")]
 use errno_dragonfly::errno_location;

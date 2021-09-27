@@ -19,9 +19,15 @@
 
 #![cfg_attr(target_os = "wasi", feature(thread_local))]
 
+#![cfg_attr(not(feature = "std"), no_std)]
+
+extern crate alloc;
+#[cfg(feature = "std")] extern crate core;
+#[cfg(unix)] extern crate cstr_core;
 #[cfg(unix)] extern crate libc;
 #[cfg(windows)] extern crate winapi;
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
+#[cfg(target_os = "wasi")] extern crate cstr_core;
 #[cfg(target_os = "wasi")] extern crate libc;
 #[cfg(target_os = "hermit")] extern crate libc;
 
@@ -31,9 +37,11 @@
 #[cfg_attr(target_os = "hermit", path = "hermit.rs")]
 mod sys;
 
-use std::fmt;
-use std::io;
+use core::fmt;
+#[cfg(feature = "std")]
 use std::error::Error;
+#[cfg(feature = "std")]
+use std::io;
 
 /// Wraps a platform-specific error code.
 ///
@@ -74,6 +82,7 @@ impl Into<i32> for Errno {
     }
 }
 
+#[cfg(feature = "std")]
 impl Error for Errno {
     // TODO: Remove when MSRV >= 1.27
     #[allow(deprecated)]
@@ -82,6 +91,7 @@ impl Error for Errno {
     }
 }
 
+#[cfg(feature = "std")]
 impl From<Errno> for io::Error {
     fn from(errno: Errno) -> Self {
         io::Error::from_raw_os_error(errno.0)

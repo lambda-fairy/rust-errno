@@ -12,7 +12,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::ptr;
+use alloc::string::String;
+use core::ptr;
 use winapi::shared::minwindef::DWORD;
 use winapi::shared::ntdef::WCHAR;
 use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
