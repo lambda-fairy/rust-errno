@@ -25,5 +25,9 @@ libc = "0.2"
 [target.'cfg(target_os="hermit")'.dependencies]
 libc = "0.2"
 
+[features]
+default = ["std"]
+std = []
+
 [badges]
 travis-ci = { repository = "lambda-fairy/rust-errno" }

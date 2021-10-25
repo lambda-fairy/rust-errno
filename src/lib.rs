@@ -18,6 +18,7 @@
 //! ```
 
 #![cfg_attr(target_os = "wasi", feature(thread_local))]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(unix)] extern crate libc;
 #[cfg(windows)] extern crate winapi;
@@ -31,8 +32,11 @@
 #[cfg_attr(target_os = "hermit", path = "hermit.rs")]
 mod sys;
 
+#[cfg(feature = "std")]
 use std::fmt;
+#[cfg(feature = "std")]
 use std::io;
+#[cfg(feature = "std")]
 use std::error::Error;
 
 /// Wraps a platform-specific error code.
@@ -46,6 +50,7 @@ use std::error::Error;
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct Errno(pub i32);
 
+#[cfg(feature = "std")]
 impl fmt::Debug for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| {
@@ -57,6 +62,7 @@ impl fmt::Debug for Errno {
     }
 }
 
+#[cfg(feature = "std")]
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| match desc {
@@ -74,6 +80,7 @@ impl Into<i32> for Errno {
     }
 }
 
+#[cfg(feature = "std")]
 impl Error for Errno {
     // TODO: Remove when MSRV >= 1.27
     #[allow(deprecated)]
@@ -82,6 +89,7 @@ impl Error for Errno {
     }
 }
 
+#[cfg(feature = "std")]
 impl From<Errno> for io::Error {
     fn from(errno: Errno) -> Self {
         io::Error::from_raw_os_error(errno.0)
@@ -102,9 +110,16 @@ pub fn set_errno(err: Errno) {
 fn it_works() {
     let x = errno();
     set_errno(x);
+}
+
+#[cfg(feature = "std")]
+#[test]
+fn it_works_with_to_string() {
+    let x = errno();
     let _ = x.to_string();
 }
 
+#[cfg(feature = "std")]
 #[test]
 fn check_description() {
     let expect = if cfg!(windows) {
@@ -125,6 +140,7 @@ fn check_description() {
         format!("Errno {{ code: 1, description: Some({:?}) }}", expect));
 }
 
+#[cfg(feature = "std")]
 #[test]
 fn check_error_into_errno() {
     const ERROR_CODE: i32 = 1;
