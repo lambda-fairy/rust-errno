@@ -1,4 +1,4 @@
-# errno [![Build status](https://img.shields.io/travis/lambda-fairy/rust-errno.svg)](http://travis-ci.org/lambda-fairy/rust-errno) [![Cargo](https://img.shields.io/crates/v/errno.svg)](https://crates.io/crates/errno)
+# errno [![CI](https://github.com/lambda-fairy/rust-errno/actions/workflows/main.yml/badge.svg)](https://github.com/lambda-fairy/rust-errno/actions/workflows/main.yml) [![Cargo](https://img.shields.io/crates/v/errno.svg)](https://crates.io/crates/errno)
 
 Cross-platform interface to the [`errno`][errno] variable. Works on Rust 1.13 or newer.
 
