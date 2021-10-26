@@ -28,6 +28,3 @@ libc = "0.2"
 [features]
 default = ["std"]
 std = []
-
-[badges]
-travis-ci = { repository = "lambda-fairy/rust-errno" }
