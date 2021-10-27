@@ -12,6 +12,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#[cfg(feature = "std")]
 use std::ptr;
 use winapi::shared::minwindef::DWORD;
 #[cfg(feature = "std")]
