@@ -1,4 +1,11 @@
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  schedule:
+    - cron: '5 21 * * 5'
+  workflow_dispatch:
 
 name: CI
 
@@ -9,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        rust: [beta, stable, 1.13.0]
+        rust: [stable, nightly, 1.13.0]
         exclude:
           # https://github.com/rust-lang/rust/issues/34674
           - os: macos-latest
@@ -24,6 +31,11 @@ jobs:
       - uses: actions-rs/cargo@v1
         with:
           command: test
+          args: --no-default-features --lib
+      - uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
 
   wasi:
     name: Test WASI

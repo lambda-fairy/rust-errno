@@ -12,13 +12,17 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#[cfg(feature = "std")]
 use std::ptr;
 use winapi::shared::minwindef::DWORD;
+#[cfg(feature = "std")]
 use winapi::shared::ntdef::WCHAR;
+#[cfg(feature = "std")]
 use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
 
 use Errno;
 
+#[cfg(feature = "std")]
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     F: FnOnce(Result<&str, Errno>) -> T
 {
@@ -50,6 +54,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     }
 }
 
+#[cfg(feature = "std")]
 pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {
