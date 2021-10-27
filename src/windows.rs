@@ -45,6 +45,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
 
         let msg = String::from_utf16_lossy(&buf[..res as usize]);
         // Trim trailing CRLF inserted by FormatMessageW
+        #[allow(deprecated)] // TODO: remove when MSRV >= 1.30
         callback(Ok(msg.trim_right()))
     }
 }
