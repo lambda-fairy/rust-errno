@@ -14,7 +14,6 @@ Add to your `Cargo.toml`:
 ```toml
 [dependencies]
 errno = "*"
-libc = "*"
 ```
 
 
@@ -36,3 +35,15 @@ let code = e.0;
 // Display a human-friendly error message
 println!("Error {}: {}", code, e);
 ```
+
+
+## `#![no_std]`
+
+Enable `#![no_std]` support by disabling the default `std` feature:
+
+```toml
+[dependencies]
+errno = { version = "*", default-features = false }
+```
+
+The `Debug` and `Display` impls will be unavailable.

@@ -8,7 +8,7 @@ license = "MIT/Apache-2.0"
 documentation = "https://docs.rs/errno"
 repository = "https://github.com/lambda-fairy/rust-errno"
 description = "Cross-platform interface to the `errno` variable."
-categories = ["os"]
+categories = ["no-std", "os"]
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"
