@@ -128,16 +128,19 @@ fn check_description() {
         "Not owner"
     } else if cfg!(target_os = "wasi") {
         "Argument list too long"
+    } else if cfg!(target_os = "haiku") {
+        "Operation not allowed"
     } else {
         "Operation not permitted"
     };
 
-    set_errno(Errno(1));
+    let errno_code = if cfg!(target_os = "haiku") { -2147483633 } else { 1 };
+    set_errno(Errno(errno_code));
 
     assert_eq!(errno().to_string(), expect);
     assert_eq!(
         format!("{:?}", errno()),
-        format!("Errno {{ code: 1, description: Some({:?}) }}", expect));
+        format!("Errno {{ code: {}, description: Some({:?}) }}", errno_code, expect));
 }
 
 #[cfg(feature = "std")]
