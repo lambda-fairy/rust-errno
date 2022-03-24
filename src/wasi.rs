@@ -20,7 +20,13 @@ use libc::{self, c_char};
 
 use Errno;
 
-#[cfg(feature = "std")]
+fn from_utf8_lossy(input: &[u8]) -> &str {
+    match core::str::from_utf8(input) {
+        Ok(valid) => valid,
+        Err(error) => unsafe { core::str::from_utf8_unchecked(&input[.. error.valid_up_to()]) },
+    }
+}
+
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     F: FnOnce(Result<&str, Errno>) -> T
 {
@@ -34,10 +40,9 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
         }
     }
     let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-    callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
+    callback(Ok(&from_utf8_lossy(c_str.to_bytes())))
 }
 
-#[cfg(feature = "std")]
 pub const STRERROR_NAME: &'static str = "strerror_r";
 
 pub fn errno() -> Errno {

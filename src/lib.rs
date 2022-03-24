@@ -20,7 +20,11 @@
 #![cfg_attr(target_os = "wasi", feature(thread_local))]
 #![cfg_attr(not(feature = "std"), no_std)]
 
+#[cfg(feature = "std")]
+extern crate core;
+
 #[cfg(unix)] extern crate libc;
+#[cfg(windows)] extern crate widestring;
 #[cfg(windows)] extern crate winapi;
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
 #[cfg(target_os = "wasi")] extern crate libc;
@@ -32,8 +36,7 @@
 #[cfg_attr(target_os = "hermit", path = "hermit.rs")]
 mod sys;
 
-#[cfg(feature = "std")]
-use std::fmt;
+use core::fmt;
 #[cfg(feature = "std")]
 use std::io;
 #[cfg(feature = "std")]
@@ -50,7 +53,6 @@ use std::error::Error;
 #[derive(Copy, Clone, Eq, Ord, PartialEq, PartialOrd, Hash)]
 pub struct Errno(pub i32);
 
-#[cfg(feature = "std")]
 impl fmt::Debug for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| {
@@ -62,7 +64,6 @@ impl fmt::Debug for Errno {
     }
 }
 
-#[cfg(feature = "std")]
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| match desc {

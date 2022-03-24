@@ -14,7 +14,8 @@ categories = ["no-std", "os"]
 libc = "0.2"
 
 [target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["errhandlingapi", "minwindef"] }
+widestring = { version = "0.5.1", default-features = false }
+winapi = { version = "0.3", features = ["errhandlingapi", "minwindef", "ntdef", "winbase"] }
 
 [target.'cfg(target_os="dragonfly")'.dependencies]
 errno-dragonfly = "0.1.1"
@@ -27,4 +28,4 @@ libc = "0.2"
 
 [features]
 default = ["std"]
-std = ["winapi/ntdef", "winapi/winbase"]
+std = []
