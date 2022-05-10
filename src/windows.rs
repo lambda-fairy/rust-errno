@@ -12,8 +12,9 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-#[cfg(feature = "std")]
-use std::ptr;
+use core::ptr;
+use core::str;
+use widestring::UStr;
 use winapi::shared::minwindef::DWORD;
 #[cfg(feature = "std")]
 use winapi::shared::ntdef::WCHAR;
@@ -22,7 +23,17 @@ use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSE
 
 use Errno;
 
-#[cfg(feature = "std")]
+fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
+    let mut output_len = 0;
+    for c in UStr::from_slice(input).chars_lossy().take_while(|&x| x != '\0') {
+        let c_len = c.len_utf8();
+        if c_len > output.len() - output_len { break; }
+        c.encode_utf8(&mut output[output_len ..]);
+        output_len += c_len;
+    }
+    return unsafe { str::from_utf8_unchecked(&output[.. output_len]) };
+}
+
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     F: FnOnce(Result<&str, Errno>) -> T
 {
@@ -47,14 +58,14 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
             return callback(Err(fm_err));
         }
 
-        let msg = String::from_utf16_lossy(&buf[..res as usize]);
+        let mut msg = [0u8; 2048];
+        let msg = from_utf16_lossy(&buf[..res as usize], &mut msg[..]);
         // Trim trailing CRLF inserted by FormatMessageW
         #[allow(deprecated)] // TODO: remove when MSRV >= 1.30
         callback(Ok(msg.trim_right()))
     }
 }
 
-#[cfg(feature = "std")]
 pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {

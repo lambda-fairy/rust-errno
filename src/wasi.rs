@@ -12,15 +12,19 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-#[cfg(feature = "std")]
-use std::ffi::CStr;
-use libc::c_int;
-#[cfg(feature = "std")]
-use libc::{self, c_char};
+use core::ffi::CStr;
+use core::str;
+use libc::{self, c_char, c_int};
 
 use Errno;
 
-#[cfg(feature = "std")]
+fn from_utf8_lossy(input: &[u8]) -> &str {
+    match str::from_utf8(input) {
+        Ok(valid) => valid,
+        Err(error) => unsafe { str::from_utf8_unchecked(&input[.. error.valid_up_to()]) },
+    }
+}
+
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     F: FnOnce(Result<&str, Errno>) -> T
 {
@@ -34,10 +38,9 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
         }
     }
     let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-    callback(Ok(&String::from_utf8_lossy(c_str.to_bytes())))
+    callback(Ok(from_utf8_lossy(c_str.to_bytes())))
 }
 
-#[cfg(feature = "std")]
 pub const STRERROR_NAME: &'static str = "strerror_r";
 
 pub fn errno() -> Errno {
