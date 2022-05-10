@@ -12,9 +12,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use core::ffi::CStr;
 use core::str;
-use libc::{self, c_char, c_int};
+use libc::{self, c_char, c_int, strlen};
 #[cfg(target_os = "dragonfly")]
 use errno_dragonfly::errno_location;
 
@@ -30,17 +29,18 @@ fn from_utf8_lossy(input: &[u8]) -> &str {
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     F: FnOnce(Result<&str, Errno>) -> T
 {
-    let mut buf = [0 as c_char; 1024];
-    unsafe {
-        if strerror_r(err.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
+    let mut buf = [0u8; 1024];
+    let c_str = unsafe {
+        if strerror_r(err.0, buf.as_mut_ptr() as *mut _, buf.len() as libc::size_t) < 0 {
             let fm_err = errno();
             if fm_err != Errno(libc::ERANGE) {
                 return callback(Err(fm_err));
             }
         }
-    }
-    let c_str = unsafe { CStr::from_ptr(buf.as_ptr()) };
-    callback(Ok(from_utf8_lossy(c_str.to_bytes())))
+        let c_str_len = strlen(buf.as_ptr() as *const _);
+        &buf[.. c_str_len]
+    };
+    callback(Ok(from_utf8_lossy(c_str)))
 }
 
 pub const STRERROR_NAME: &'static str = "strerror_r";
