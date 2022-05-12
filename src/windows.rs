@@ -31,7 +31,7 @@ fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
         c.encode_utf8(&mut output[output_len ..]);
         output_len += c_len;
     }
-    return unsafe { str::from_utf8_unchecked(&output[.. output_len]) };
+    unsafe { str::from_utf8_unchecked(&output[.. output_len]) }
 }
 
 pub fn with_description<F, T>(err: Errno, callback: F) -> T where
