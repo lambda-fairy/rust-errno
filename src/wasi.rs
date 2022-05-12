@@ -29,7 +29,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
 {
     let mut buf = [0u8; 1024];
     let c_str = unsafe {
-        if strerror_r(err.0, buf.as_mut_ptr(), buf.len() as libc::size_t) < 0 {
+        if strerror_r(err.0, buf.as_mut_ptr() as *mut _, buf.len() as libc::size_t) < 0 {
             let fm_err = errno();
             if fm_err != Errno(libc::ERANGE) {
                 return callback(Err(fm_err));
