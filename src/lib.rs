@@ -24,7 +24,6 @@
 extern crate core;
 
 #[cfg(unix)] extern crate libc;
-#[cfg(windows)] extern crate widestring;
 #[cfg(windows)] extern crate winapi;
 #[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
 #[cfg(target_os = "wasi")] extern crate libc;
