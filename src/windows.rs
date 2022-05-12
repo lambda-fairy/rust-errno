@@ -12,7 +12,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use core::char;
+use core::char::{self, REPLACEMENT_CHARACTER};
 use core::ptr;
 use core::str;
 use winapi::shared::minwindef::DWORD;
@@ -25,7 +25,7 @@ use Errno;
 
 fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
     let mut output_len = 0;
-    for c in char::decode_utf16(input.iter().copied()).map(|x| x.unwrap_or('\u{FFFD}')).take_while(|&x| x != '\0') {
+    for c in char::decode_utf16(input.iter().copied()).map(|x| x.unwrap_or(REPLACEMENT_CHARACTER)).take_while(|&x| x != '\0') {
         let c_len = c.len_utf8();
         if c_len > output.len() - output_len { break; }
         c.encode_utf8(&mut output[output_len ..]);
