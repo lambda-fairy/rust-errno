@@ -110,6 +110,7 @@ pub fn set_errno(err: Errno) {
 mod tests {
     extern crate std;
     use std::string::ToString;
+    use super::*;
 
     #[test]
     fn it_works() {
