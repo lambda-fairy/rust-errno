@@ -3,8 +3,8 @@
 - Add haiku support
   [#42](https://github.com/lambda-fairy/rust-errno/pull/42)
 
-- Remove unused `winapi` features for `#![no_std]`
-  [#40](https://github.com/lambda-fairy/rust-errno/pull/40)
+- Add formatting with `#![no_std]`
+  [#44](https://github.com/lambda-fairy/rust-errno/pull/44)
 
 # [0.2.8] - 2021-10-27
 
