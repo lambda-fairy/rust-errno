@@ -62,7 +62,6 @@ extern {
     #[link_name = "errno"]
     static mut libc_errno: c_int;
 
-    #[cfg(feature = "std")]
     fn strerror_r(errnum: c_int, buf: *mut c_char,
                   buflen: libc::size_t) -> c_int;
 }
