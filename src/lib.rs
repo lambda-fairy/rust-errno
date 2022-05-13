@@ -106,49 +106,52 @@ pub fn set_errno(err: Errno) {
     sys::set_errno(err)
 }
 
-#[test]
-fn it_works() {
-    let x = errno();
-    set_errno(x);
-}
+#[cfg(test)]
+mod tests {
+    extern crate std;
+    use std::string::ToString;
 
-#[cfg(feature = "std")]
-#[test]
-fn it_works_with_to_string() {
-    let x = errno();
-    let _ = x.to_string();
-}
+    #[test]
+    fn it_works() {
+        let x = errno();
+        set_errno(x);
+    }
 
-#[cfg(feature = "std")]
-#[test]
-fn check_description() {
-    let expect = if cfg!(windows) {
-        "Incorrect function."
-    } else if cfg!(target_os = "illumos") {
-        "Not owner"
-    } else if cfg!(target_os = "wasi") {
-        "Argument list too long"
-    } else if cfg!(target_os = "haiku") {
-        "Operation not allowed"
-    } else {
-        "Operation not permitted"
-    };
+    #[test]
+    fn it_works_with_to_string() {
+        let x = errno();
+        let _ = x.to_string();
+    }
 
-    let errno_code = if cfg!(target_os = "haiku") { -2147483633 } else { 1 };
-    set_errno(Errno(errno_code));
+    #[test]
+    fn check_description() {
+        let expect = if cfg!(windows) {
+            "Incorrect function."
+        } else if cfg!(target_os = "illumos") {
+            "Not owner"
+        } else if cfg!(target_os = "wasi") {
+            "Argument list too long"
+        } else if cfg!(target_os = "haiku") {
+            "Operation not allowed"
+        } else {
+            "Operation not permitted"
+        };
 
-    assert_eq!(errno().to_string(), expect);
-    assert_eq!(
-        format!("{:?}", errno()),
-        format!("Errno {{ code: {}, description: Some({:?}) }}", errno_code, expect));
-}
+        let errno_code = if cfg!(target_os = "haiku") { -2147483633 } else { 1 };
+        set_errno(Errno(errno_code));
 
-#[cfg(feature = "std")]
-#[test]
-fn check_error_into_errno() {
-    const ERROR_CODE: i32 = 1;
+        assert_eq!(errno().to_string(), expect);
+        assert_eq!(
+            format!("{:?}", errno()),
+            format!("Errno {{ code: {}, description: Some({:?}) }}", errno_code, expect));
+    }
 
-    let error = io::Error::from_raw_os_error(ERROR_CODE);
-    let new_error: io::Error = Errno(ERROR_CODE).into();
-    assert_eq!(error.kind(), new_error.kind());
+    #[test]
+    fn check_error_into_errno() {
+        const ERROR_CODE: i32 = 1;
+
+        let error = std::io::Error::from_raw_os_error(ERROR_CODE);
+        let new_error: std::io::Error = Errno(ERROR_CODE).into();
+        assert_eq!(error.kind(), new_error.kind());
+    }
 }
