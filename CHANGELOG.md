@@ -5,6 +5,9 @@
 
 - Add formatting with `#![no_std]`
   [#44](https://github.com/lambda-fairy/rust-errno/pull/44)
+ 
+- Update minimum Rust version to 1.36
+  [#48](https://github.com/lambda-fairy/rust-errno/pull/48)
 
 # [0.2.8] - 2021-10-27
 
