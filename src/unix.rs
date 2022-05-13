@@ -77,7 +77,6 @@ extern {
                link_name = "__errno_location")]
     fn errno_location() -> *mut c_int;
 
-    #[cfg(feature = "std")]
     #[cfg_attr(target_os = "linux", link_name = "__xpg_strerror_r")]
     fn strerror_r(errnum: c_int, buf: *mut c_char,
                   buflen: libc::size_t) -> c_int;
