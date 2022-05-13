@@ -16,9 +16,7 @@ use core::char::{self, REPLACEMENT_CHARACTER};
 use core::ptr;
 use core::str;
 use winapi::shared::minwindef::DWORD;
-#[cfg(feature = "std")]
 use winapi::shared::ntdef::WCHAR;
-#[cfg(feature = "std")]
 use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
 
 use Errno;
