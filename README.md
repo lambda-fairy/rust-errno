@@ -46,4 +46,4 @@ Enable `#![no_std]` support by disabling the default `std` feature:
 errno = { version = "*", default-features = false }
 ```
 
-The `Debug` and `Display` impls will be unavailable.
+The `Error` impl will be unavailable.
