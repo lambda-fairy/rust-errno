@@ -53,4 +53,10 @@ jobs:
           CARGO_TARGET_WASM32_WASI_RUNNER: wasmtime
         with:
           command: test
+          args: --target wasm32-wasi --no-default-features --lib
+      - uses: actions-rs/cargo@v1
+        env:
+          CARGO_TARGET_WASM32_WASI_RUNNER: wasmtime
+        with:
+          command: test
           args: --target wasm32-wasi
