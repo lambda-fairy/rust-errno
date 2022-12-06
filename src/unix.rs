@@ -75,6 +75,8 @@ extern {
                link_name = "_errnop")]
     #[cfg_attr(target_os = "linux",
                link_name = "__errno_location")]
+    #[cfg_attr(target_os = "aix",
+               link_name = "_Errno")]
     fn errno_location() -> *mut c_int;
 
     #[cfg_attr(target_os = "linux", link_name = "__xpg_strerror_r")]
