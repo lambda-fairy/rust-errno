@@ -15,9 +15,10 @@
 use core::char::{self, REPLACEMENT_CHARACTER};
 use core::ptr;
 use core::str;
-use winapi::shared::minwindef::DWORD;
-use winapi::shared::ntdef::WCHAR;
-use winapi::um::winbase::{FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS};
+use windows_sys::Win32::Foundation::{GetLastError, SetLastError, WIN32_ERROR};
+use windows_sys::Win32::System::Diagnostics::Debug::{
+    FormatMessageW, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS,
+};
 
 use Errno;
 
@@ -42,18 +43,18 @@ where
 {
     // This value is calculated from the macro
     // MAKELANGID(LANG_SYSTEM_DEFAULT, SUBLANG_SYS_DEFAULT)
-    let lang_id = 0x0800 as DWORD;
+    let lang_id = 0x0800_u32;
 
-    let mut buf = [0 as WCHAR; 2048];
+    let mut buf = [0u16; 2048];
 
     unsafe {
-        let res = ::winapi::um::winbase::FormatMessageW(
+        let res = FormatMessageW(
             FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
             ptr::null_mut(),
-            err.0 as DWORD,
+            err.0 as u32,
             lang_id,
             buf.as_mut_ptr(),
-            buf.len() as DWORD,
+            buf.len() as u32,
             ptr::null_mut(),
         );
         if res == 0 {
@@ -73,9 +74,9 @@ where
 pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {
-    unsafe { Errno(::winapi::um::errhandlingapi::GetLastError() as i32) }
+    unsafe { Errno(GetLastError() as i32) }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
-    unsafe { ::winapi::um::errhandlingapi::SetLastError(errno as DWORD) }
+    unsafe { SetLastError(errno as WIN32_ERROR) }
 }

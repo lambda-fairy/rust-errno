@@ -5,9 +5,11 @@
 
 - Add formatting with `#![no_std]`
   [#44](https://github.com/lambda-fairy/rust-errno/pull/44)
- 
-- Update minimum Rust version to 1.36
-  [#48](https://github.com/lambda-fairy/rust-errno/pull/48)
+
+- Switch from `winapi` to `windows-sys` [#55](https://github.com/lambda-fairy/rust-errno/pull/55)
+
+- Update minimum Rust version to 1.48
+  [#48](https://github.com/lambda-fairy/rust-errno/pull/48) [#55](https://github.com/lambda-fairy/rust-errno/pull/55)
 
 # [0.2.8] - 2021-10-27
 

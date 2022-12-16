@@ -32,7 +32,7 @@ extern crate libc;
 #[cfg(target_os = "hermit")]
 extern crate libc;
 #[cfg(windows)]
-extern crate winapi;
+extern crate windows_sys;
 
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
