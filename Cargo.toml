@@ -4,7 +4,7 @@ name = "errno"
 version = "0.2.8"
 authors = ["Chris Wong <lambda.fairy@gmail.com>"]
 
-license = "MIT/Apache-2.0"
+license = "MIT OR Apache-2.0"
 documentation = "https://docs.rs/errno"
 repository = "https://github.com/lambda-fairy/rust-errno"
 description = "Cross-platform interface to the `errno` variable."
