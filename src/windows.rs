@@ -23,17 +23,22 @@ use Errno;
 
 fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
     let mut output_len = 0;
-    for c in char::decode_utf16(input.iter().copied().take_while(|&x| x != 0)).map(|x| x.unwrap_or(REPLACEMENT_CHARACTER)) {
+    for c in char::decode_utf16(input.iter().copied().take_while(|&x| x != 0))
+        .map(|x| x.unwrap_or(REPLACEMENT_CHARACTER))
+    {
         let c_len = c.len_utf8();
-        if c_len > output.len() - output_len { break; }
-        c.encode_utf8(&mut output[output_len ..]);
+        if c_len > output.len() - output_len {
+            break;
+        }
+        c.encode_utf8(&mut output[output_len..]);
         output_len += c_len;
     }
-    unsafe { str::from_utf8_unchecked(&output[.. output_len]) }
+    unsafe { str::from_utf8_unchecked(&output[..output_len]) }
 }
 
-pub fn with_description<F, T>(err: Errno, callback: F) -> T where
-    F: FnOnce(Result<&str, Errno>) -> T
+pub fn with_description<F, T>(err: Errno, callback: F) -> T
+where
+    F: FnOnce(Result<&str, Errno>) -> T,
 {
     // This value is calculated from the macro
     // MAKELANGID(LANG_SYSTEM_DEFAULT, SUBLANG_SYS_DEFAULT)
@@ -42,14 +47,15 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
     let mut buf = [0 as WCHAR; 2048];
 
     unsafe {
-        let res = ::winapi::um::winbase::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM |
-                                           FORMAT_MESSAGE_IGNORE_INSERTS,
-                                           ptr::null_mut(),
-                                           err.0 as DWORD,
-                                           lang_id,
-                                           buf.as_mut_ptr(),
-                                           buf.len() as DWORD,
-                                           ptr::null_mut());
+        let res = ::winapi::um::winbase::FormatMessageW(
+            FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+            ptr::null_mut(),
+            err.0 as DWORD,
+            lang_id,
+            buf.as_mut_ptr(),
+            buf.len() as DWORD,
+            ptr::null_mut(),
+        );
         if res == 0 {
             // Sometimes FormatMessageW can fail e.g. system doesn't like lang_id
             let fm_err = errno();
@@ -67,13 +73,9 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
 pub const STRERROR_NAME: &'static str = "FormatMessageW";
 
 pub fn errno() -> Errno {
-    unsafe {
-        Errno(::winapi::um::errhandlingapi::GetLastError() as i32)
-    }
+    unsafe { Errno(::winapi::um::errhandlingapi::GetLastError() as i32) }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
-    unsafe {
-        ::winapi::um::errhandlingapi::SetLastError(errno as DWORD)
-    }
+    unsafe { ::winapi::um::errhandlingapi::SetLastError(errno as DWORD) }
 }

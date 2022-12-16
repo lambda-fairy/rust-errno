@@ -23,11 +23,16 @@
 #[cfg(feature = "std")]
 extern crate core;
 
-#[cfg(unix)] extern crate libc;
-#[cfg(windows)] extern crate winapi;
-#[cfg(target_os = "dragonfly")] extern crate errno_dragonfly;
-#[cfg(target_os = "wasi")] extern crate libc;
-#[cfg(target_os = "hermit")] extern crate libc;
+#[cfg(target_os = "dragonfly")]
+extern crate errno_dragonfly;
+#[cfg(unix)]
+extern crate libc;
+#[cfg(target_os = "wasi")]
+extern crate libc;
+#[cfg(target_os = "hermit")]
+extern crate libc;
+#[cfg(windows)]
+extern crate winapi;
 
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
@@ -37,9 +42,9 @@ mod sys;
 
 use core::fmt;
 #[cfg(feature = "std")]
-use std::io;
-#[cfg(feature = "std")]
 use std::error::Error;
+#[cfg(feature = "std")]
+use std::io;
 
 /// Wraps a platform-specific error code.
 ///
@@ -68,8 +73,12 @@ impl fmt::Display for Errno {
         sys::with_description(*self, |desc| match desc {
             Ok(desc) => fmt.write_str(&desc),
             Err(fm_err) => write!(
-                fmt, "OS error {} ({} returned error {})",
-                self.0, sys::STRERROR_NAME, fm_err.0),
+                fmt,
+                "OS error {} ({} returned error {})",
+                self.0,
+                sys::STRERROR_NAME,
+                fm_err.0
+            ),
         })
     }
 }
@@ -134,13 +143,21 @@ fn check_description() {
         "Operation not permitted"
     };
 
-    let errno_code = if cfg!(target_os = "haiku") { -2147483633 } else { 1 };
+    let errno_code = if cfg!(target_os = "haiku") {
+        -2147483633
+    } else {
+        1
+    };
     set_errno(Errno(errno_code));
 
     assert_eq!(errno().to_string(), expect);
     assert_eq!(
         format!("{:?}", errno()),
-        format!("Errno {{ code: {}, description: Some({:?}) }}", errno_code, expect));
+        format!(
+            "Errno {{ code: {}, description: Some({:?}) }}",
+            errno_code, expect
+        )
+    );
 }
 
 #[cfg(feature = "std")]
