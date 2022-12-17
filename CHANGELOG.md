@@ -3,6 +3,9 @@
 - Add haiku support
   [#42](https://github.com/lambda-fairy/rust-errno/pull/42)
 
+- Add haiku support
+  [#54](https://github.com/lambda-fairy/rust-errno/pull/54)
+
 - Add formatting with `#![no_std]`
   [#44](https://github.com/lambda-fairy/rust-errno/pull/44)
 
