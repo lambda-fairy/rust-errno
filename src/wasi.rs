@@ -15,7 +15,7 @@
 use core::str;
 use libc::{self, c_char, c_int, strlen};
 
-use Errno;
+use crate::Errno;
 
 fn from_utf8_lossy(input: &[u8]) -> &str {
     match str::from_utf8(input) {

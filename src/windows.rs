@@ -20,7 +20,7 @@ use windows_sys::Win32::System::Diagnostics::Debug::{
     FormatMessageW, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS,
 };
 
-use Errno;
+use crate::Errno;
 
 fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
     let mut output_len = 0;
