@@ -42,7 +42,7 @@ where
     callback(Ok(from_utf8_lossy(c_str)))
 }
 
-pub const STRERROR_NAME: &'static str = "strerror_r";
+pub const STRERROR_NAME: &str = "strerror_r";
 
 pub fn errno() -> Errno {
     // libc_errno is thread-local, so simply read its value.

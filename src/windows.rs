@@ -71,7 +71,7 @@ where
     }
 }
 
-pub const STRERROR_NAME: &'static str = "FormatMessageW";
+pub const STRERROR_NAME: &str = "FormatMessageW";
 
 pub fn errno() -> Errno {
     unsafe { Errno(GetLastError() as i32) }
