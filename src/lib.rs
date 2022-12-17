@@ -71,7 +71,7 @@ impl fmt::Debug for Errno {
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| match desc {
-            Ok(desc) => fmt.write_str(&desc),
+            Ok(desc) => fmt.write_str(desc),
             Err(fm_err) => write!(
                 fmt,
                 "OS error {} ({} returned error {})",
