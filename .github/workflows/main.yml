@@ -54,3 +54,17 @@ jobs:
         run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --no-default-features
       - name: Test (all features)
         run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
+
+
+  lints:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Check formatting
+        run: cargo fmt --check
