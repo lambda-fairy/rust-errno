@@ -22,25 +22,33 @@ jobs:
           - os: macos-latest
             rust: 1.48
     steps:
-      - uses: actions/checkout@v2
-      - uses: dtolnay/rust-toolchain@master
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-      - run: cargo test --no-default-features
-      - run: cargo test --all-features
+      - name: Test (no features)
+        run: cargo test --no-default-features
+      - name: Test (all features)
+        run: cargo test --all-features
 
 
   wasi:
     name: Test WASI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: dtolnay/rust-toolchain@nightly
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@nightly
         with:
           targets: wasm32-wasi
-      - run:
+      - name: Install wasmtime
+        run: |
           curl https://wasmtime.dev/install.sh -sSf | bash
-      - run:
           echo "$HOME/.wasmtime/bin" >> $GITHUB_PATH
-      - run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --no-default-features
-      - run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
+      - name: Test (no features)
+        run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --no-default-features
+      - name: Test (all features)
+        run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
