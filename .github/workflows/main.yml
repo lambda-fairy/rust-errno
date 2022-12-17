@@ -23,44 +23,24 @@ jobs:
             rust: 1.48
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: ${{ matrix.rust }}
-          override: true
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --no-default-features --lib
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --all-features
+      - run: cargo test --no-default-features
+      - run: cargo test --all-features
+
 
   wasi:
     name: Test WASI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions-rs/toolchain@v1
+      - uses: dtolnay/rust-toolchain@nightly
         with:
-          profile: minimal
-          toolchain: nightly
-          override: true
-          target: wasm32-wasi
+          targets: wasm32-wasi
       - run:
           curl https://wasmtime.dev/install.sh -sSf | bash
       - run:
           echo "$HOME/.wasmtime/bin" >> $GITHUB_PATH
-      - uses: actions-rs/cargo@v1
-        env:
-          CARGO_TARGET_WASM32_WASI_RUNNER: wasmtime
-        with:
-          command: test
-          args: --target wasm32-wasi --no-default-features --lib
-      - uses: actions-rs/cargo@v1
-        env:
-          CARGO_TARGET_WASM32_WASI_RUNNER: wasmtime
-        with:
-          command: test
-          args: --target wasm32-wasi
+      - run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --no-default-features
+      - run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
