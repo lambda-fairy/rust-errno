@@ -16,11 +16,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        rust: [stable, nightly, 1.48]
+        rust: [stable, nightly, '1.48']
         exclude:
           # TODO(#52): Investigate why this is broken
           - os: macos-latest
-            rust: 1.48
+            rust: '1.48'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
