@@ -20,12 +20,13 @@ use Errno;
 fn from_utf8_lossy(input: &[u8]) -> &str {
     match str::from_utf8(input) {
         Ok(valid) => valid,
-        Err(error) => unsafe { str::from_utf8_unchecked(&input[.. error.valid_up_to()]) },
+        Err(error) => unsafe { str::from_utf8_unchecked(&input[..error.valid_up_to()]) },
     }
 }
 
-pub fn with_description<F, T>(err: Errno, callback: F) -> T where
-    F: FnOnce(Result<&str, Errno>) -> T
+pub fn with_description<F, T>(err: Errno, callback: F) -> T
+where
+    F: FnOnce(Result<&str, Errno>) -> T,
 {
     let mut buf = [0u8; 1024];
     let c_str = unsafe {
@@ -36,7 +37,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
             }
         }
         let c_str_len = strlen(buf.as_ptr() as *const _);
-        &buf[.. c_str_len]
+        &buf[..c_str_len]
     };
     callback(Ok(from_utf8_lossy(c_str)))
 }
@@ -45,9 +46,7 @@ pub const STRERROR_NAME: &'static str = "strerror_r";
 
 pub fn errno() -> Errno {
     // libc_errno is thread-local, so simply read its value.
-    unsafe {
-        Errno(libc_errno)
-    }
+    unsafe { Errno(libc_errno) }
 }
 
 pub fn set_errno(Errno(new_errno): Errno) {
@@ -57,11 +56,10 @@ pub fn set_errno(Errno(new_errno): Errno) {
     }
 }
 
-extern {
+extern "C" {
     #[thread_local]
     #[link_name = "errno"]
     static mut libc_errno: c_int;
 
-    fn strerror_r(errnum: c_int, buf: *mut c_char,
-                  buflen: libc::size_t) -> c_int;
+    fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: libc::size_t) -> c_int;
 }

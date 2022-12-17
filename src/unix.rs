@@ -13,21 +13,22 @@
 // except according to those terms.
 
 use core::str;
-use libc::{self, c_char, c_int, strlen};
 #[cfg(target_os = "dragonfly")]
 use errno_dragonfly::errno_location;
+use libc::{self, c_char, c_int, strlen};
 
 use Errno;
 
 fn from_utf8_lossy(input: &[u8]) -> &str {
     match str::from_utf8(input) {
         Ok(valid) => valid,
-        Err(error) => unsafe { str::from_utf8_unchecked(&input[.. error.valid_up_to()]) },
+        Err(error) => unsafe { str::from_utf8_unchecked(&input[..error.valid_up_to()]) },
     }
 }
 
-pub fn with_description<F, T>(err: Errno, callback: F) -> T where
-    F: FnOnce(Result<&str, Errno>) -> T
+pub fn with_description<F, T>(err: Errno, callback: F) -> T
+where
+    F: FnOnce(Result<&str, Errno>) -> T,
 {
     let mut buf = [0u8; 1024];
     let c_str = unsafe {
@@ -38,7 +39,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
             }
         }
         let c_str_len = strlen(buf.as_ptr() as *const _);
-        &buf[.. c_str_len]
+        &buf[..c_str_len]
     };
     callback(Ok(from_utf8_lossy(c_str)))
 }
@@ -46,9 +47,7 @@ pub fn with_description<F, T>(err: Errno, callback: F) -> T where
 pub const STRERROR_NAME: &'static str = "strerror_r";
 
 pub fn errno() -> Errno {
-    unsafe {
-        Errno(*errno_location())
-    }
+    unsafe { Errno(*errno_location()) }
 }
 
 pub fn set_errno(Errno(errno): Errno) {
@@ -57,29 +56,30 @@ pub fn set_errno(Errno(errno): Errno) {
     }
 }
 
-extern {
+extern "C" {
     #[cfg(not(target_os = "dragonfly"))]
-    #[cfg_attr(any(target_os = "macos",
-                   target_os = "ios",
-                   target_os = "freebsd"),
-               link_name = "__error")]
-    #[cfg_attr(any(target_os = "openbsd",
-                   target_os = "netbsd",
-                   target_os = "bitrig",
-                   target_os = "android"),
-               link_name = "__errno")]
-    #[cfg_attr(any(target_os = "solaris",
-                   target_os = "illumos"),
-               link_name = "___errno")]
-    #[cfg_attr(target_os = "haiku",
-               link_name = "_errnop")]
-    #[cfg_attr(target_os = "linux",
-               link_name = "__errno_location")]
-    #[cfg_attr(target_os = "aix",
-               link_name = "_Errno")]
+    #[cfg_attr(
+        any(target_os = "macos", target_os = "ios", target_os = "freebsd"),
+        link_name = "__error"
+    )]
+    #[cfg_attr(
+        any(
+            target_os = "openbsd",
+            target_os = "netbsd",
+            target_os = "bitrig",
+            target_os = "android"
+        ),
+        link_name = "__errno"
+    )]
+    #[cfg_attr(
+        any(target_os = "solaris", target_os = "illumos"),
+        link_name = "___errno"
+    )]
+    #[cfg_attr(target_os = "haiku", link_name = "_errnop")]
+    #[cfg_attr(target_os = "linux", link_name = "__errno_location")]
+    #[cfg_attr(target_os = "aix", link_name = "_Errno")]
     fn errno_location() -> *mut c_int;
 
     #[cfg_attr(target_os = "linux", link_name = "__xpg_strerror_r")]
-    fn strerror_r(errnum: c_int, buf: *mut c_char,
-                  buflen: libc::size_t) -> c_int;
+    fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: libc::size_t) -> c_int;
 }

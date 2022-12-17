@@ -13,8 +13,12 @@ categories = ["no-std", "os"]
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"
 
-[target.'cfg(windows)'.dependencies]
-winapi = { version = "0.3", features = ["errhandlingapi", "minwindef", "ntdef", "winbase"] }
+[target.'cfg(windows)'.dependencies.windows-sys]
+version = "0.42"
+features = [
+  "Win32_Foundation",
+  "Win32_System_Diagnostics_Debug",
+]
 
 [target.'cfg(target_os="dragonfly")'.dependencies]
 errno-dragonfly = "0.1.1"
