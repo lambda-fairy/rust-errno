@@ -10,6 +10,7 @@ documentation = "https://docs.rs/errno"
 repository = "https://github.com/lambda-fairy/rust-errno"
 description = "Cross-platform interface to the `errno` variable."
 categories = ["no-std", "os"]
+rust-version = "1.48"
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"
