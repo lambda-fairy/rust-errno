@@ -20,20 +20,6 @@
 #![cfg_attr(target_os = "wasi", feature(thread_local))]
 #![cfg_attr(not(feature = "std"), no_std)]
 
-#[cfg(feature = "std")]
-extern crate core;
-
-#[cfg(target_os = "dragonfly")]
-extern crate errno_dragonfly;
-#[cfg(unix)]
-extern crate libc;
-#[cfg(target_os = "wasi")]
-extern crate libc;
-#[cfg(target_os = "hermit")]
-extern crate libc;
-#[cfg(windows)]
-extern crate windows_sys;
-
 #[cfg_attr(unix, path = "unix.rs")]
 #[cfg_attr(windows, path = "windows.rs")]
 #[cfg_attr(target_os = "wasi", path = "wasi.rs")]
