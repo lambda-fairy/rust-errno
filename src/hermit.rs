@@ -23,7 +23,7 @@ where
     callback(Ok("unknown error"))
 }
 
-pub const STRERROR_NAME: &'static str = "strerror_r";
+pub const STRERROR_NAME: &str = "strerror_r";
 
 pub fn errno() -> Errno {
     Errno(0)

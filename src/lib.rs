@@ -71,7 +71,7 @@ impl fmt::Debug for Errno {
 impl fmt::Display for Errno {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         sys::with_description(*self, |desc| match desc {
-            Ok(desc) => fmt.write_str(&desc),
+            Ok(desc) => fmt.write_str(desc),
             Err(fm_err) => write!(
                 fmt,
                 "OS error {} ({} returned error {})",
@@ -83,9 +83,9 @@ impl fmt::Display for Errno {
     }
 }
 
-impl Into<i32> for Errno {
-    fn into(self) -> i32 {
-        self.0
+impl From<Errno> for i32 {
+    fn from(e: Errno) -> Self {
+        e.0
     }
 }
 
