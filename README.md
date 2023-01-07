@@ -17,6 +17,19 @@ errno = "*"
 ```
 
 
+## Comparison with `std::io::Error`
+
+The standard library provides [`Error::last_os_error`][last_os_error] which fetches `errno` in the same way.
+
+This crate provides these extra features:
+
+- No heap allocations
+- Optional `#![no_std]` support
+- A `set_errno` function
+
+[last_os_error]: https://doc.rust-lang.org/std/io/struct.Error.html#method.last_os_error
+
+
 ## Examples
 
 ```rust
