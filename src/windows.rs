@@ -66,8 +66,7 @@ where
         let mut msg = [0u8; 2048];
         let msg = from_utf16_lossy(&buf[..res as usize], &mut msg[..]);
         // Trim trailing CRLF inserted by FormatMessageW
-        #[allow(deprecated)] // TODO: remove when MSRV >= 1.30
-        callback(Ok(msg.trim_right()))
+        callback(Ok(msg.trim_end()))
     }
 }
 
