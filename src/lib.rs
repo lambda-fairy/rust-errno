@@ -17,7 +17,6 @@
 //! println!("Error {}: {}", code, e);
 //! ```
 
-#![cfg_attr(target_os = "wasi", feature(thread_local))]
 #![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg_attr(unix, path = "unix.rs")]

@@ -45,21 +45,16 @@ where
 pub const STRERROR_NAME: &str = "strerror_r";
 
 pub fn errno() -> Errno {
-    // libc_errno is thread-local, so simply read its value.
-    unsafe { Errno(libc_errno) }
+    unsafe { Errno(*__errno_location()) }
 }
 
 pub fn set_errno(Errno(new_errno): Errno) {
-    // libc_errno is thread-local, so simply assign to it.
     unsafe {
-        libc_errno = new_errno;
+        *__errno_location() = new_errno;
     }
 }
 
 extern "C" {
-    #[thread_local]
-    #[link_name = "errno"]
-    static mut libc_errno: c_int;
-
+    fn __errno_location() -> *mut c_int;
     fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: size_t) -> c_int;
 }
