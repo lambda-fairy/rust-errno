@@ -16,6 +16,8 @@
 
 - Upgrade to Rust 2018 edition [#59](https://github.com/lambda-fairy/rust-errno/pull/59)
 
+- wasm32-wasi: Use `__errno_location` instead of `feature(thread_local)`. [#66](https://github.com/lambda-fairy/rust-errno/pull/66)
+
 # [0.2.8] - 2021-10-27
 
 - Optionally support no_std
