@@ -76,7 +76,10 @@ extern "C" {
         link_name = "___errno"
     )]
     #[cfg_attr(target_os = "haiku", link_name = "_errnop")]
-    #[cfg_attr(target_os = "linux", link_name = "__errno_location")]
+    #[cfg_attr(
+        any(target_os = "linux", target_os = "redox"),
+        link_name = "__errno_location"
+    )]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
     fn errno_location() -> *mut c_int;
 
