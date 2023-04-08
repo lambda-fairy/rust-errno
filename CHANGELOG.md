@@ -1,5 +1,13 @@
 # [Unreleased]
 
+# [0.3.1] - 2023-04-08
+
+- Correct link name on redox
+  [#69](https://github.com/lambda-fairy/rust-errno/pull/69)
+
+- Update windows-sys requirement from 0.45 to 0.48
+  [#70](https://github.com/lambda-fairy/rust-errno/pull/70)
+
 # [0.3.0] - 2023-02-12
 
 - Add haiku support
@@ -25,6 +33,7 @@
 - Optionally support no_std
   [#31](https://github.com/lambda-fairy/rust-errno/pull/31)
 
-[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/lambda-fairy/rust-errno/compare/v0.2.8...v0.3.0
 [0.2.8]: https://github.com/lambda-fairy/rust-errno/compare/v0.2.7...v0.2.8
