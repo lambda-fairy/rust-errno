@@ -1,5 +1,8 @@
 # [Unreleased]
 
+- Add support for QNX Neutrino
+  [#72](https://github.com/lambda-fairy/rust-errno/pull/72)
+
 # [0.3.1] - 2023-04-08
 
 - Correct link name on redox
