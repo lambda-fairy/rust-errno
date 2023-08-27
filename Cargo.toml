@@ -13,7 +13,7 @@ categories = ["no-std", "os"]
 rust-version = "1.48"
 
 [target.'cfg(unix)'.dependencies]
-libc = "0.2"
+libc = { version = "0.2", default-features = false }
 
 [target.'cfg(windows)'.dependencies.windows-sys]
 version = "0.48"
@@ -26,11 +26,11 @@ features = [
 errno-dragonfly = "0.1.2"
 
 [target.'cfg(target_os="wasi")'.dependencies]
-libc = "0.2"
+libc = { version = "0.2", default-features = false }
 
 [target.'cfg(target_os="hermit")'.dependencies]
-libc = "0.2"
+libc = { version = "0.2", default-features = false }
 
 [features]
 default = ["std"]
-std = []
+std = ["libc/std"]
