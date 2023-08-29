@@ -77,13 +77,16 @@ extern "C" {
     )]
     #[cfg_attr(target_os = "haiku", link_name = "_errnop")]
     #[cfg_attr(
-        any(target_os = "linux", target_os = "redox"),
+        any(target_os = "linux", target_os = "hurd", target_os = "redox"),
         link_name = "__errno_location"
     )]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
     #[cfg_attr(target_os = "nto", link_name = "__get_errno_ptr")]
     fn errno_location() -> *mut c_int;
 
-    #[cfg_attr(target_os = "linux", link_name = "__xpg_strerror_r")]
+    #[cfg_attr(
+        any(target_os = "linux", target_os = "hurd"),
+        link_name = "__xpg_strerror_r"
+    )]
     fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: size_t) -> c_int;
 }
