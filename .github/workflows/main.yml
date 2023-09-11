@@ -19,7 +19,7 @@ jobs:
         rust: [stable, nightly, '1.48']
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@master
         with:
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@nightly
         with:
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
