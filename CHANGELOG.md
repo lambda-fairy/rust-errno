@@ -1,5 +1,10 @@
 # [Unreleased]
 
+# [0.3.4] - 2023-10-01
+
+- Add GNU/Hurd support
+  [#80](https://github.com/lambda-fairy/rust-errno/pull/80)
+
 # [0.3.3] - 2023-08-28
 
 - Disable "libc/std" in no-std configurations.
@@ -52,8 +57,9 @@
 - Optionally support no_std
   [#31](https://github.com/lambda-fairy/rust-errno/pull/31)
 
-[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.3...HEAD
-[0.3.3]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.1...v0.3.2
+[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.4...HEAD
+[0.3.4]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/lambda-fairy/rust-errno/compare/v0.2.8...v0.3.0
