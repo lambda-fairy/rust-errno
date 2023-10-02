@@ -13,8 +13,6 @@
 // except according to those terms.
 
 use core::str;
-#[cfg(target_os = "dragonfly")]
-use errno_dragonfly::errno_location;
 use libc::{self, c_char, c_int, size_t, strlen};
 
 use crate::Errno;
@@ -57,7 +55,6 @@ pub fn set_errno(Errno(errno): Errno) {
 }
 
 extern "C" {
-    #[cfg(not(target_os = "dragonfly"))]
     #[cfg_attr(
         any(target_os = "macos", target_os = "ios", target_os = "freebsd"),
         link_name = "__error"
@@ -78,7 +75,12 @@ extern "C" {
     )]
     #[cfg_attr(target_os = "haiku", link_name = "_errnop")]
     #[cfg_attr(
-        any(target_os = "linux", target_os = "hurd", target_os = "redox"),
+        any(
+            target_os = "linux",
+            target_os = "hurd",
+            target_os = "redox",
+            target_os = "dragonfly"
+        ),
         link_name = "__errno_location"
     )]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
