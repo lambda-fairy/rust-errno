@@ -1,5 +1,10 @@
 # [Unreleased]
 
+# [0.3.5] - 2023-10-08
+
+- Use __errno_location on DragonFly BSD
+  [#82](https://github.com/lambda-fairy/rust-errno/pull/82)
+
 # [0.3.4] - 2023-10-01
 
 - Add GNU/Hurd support
@@ -57,7 +62,8 @@
 - Optionally support no_std
   [#31](https://github.com/lambda-fairy/rust-errno/pull/31)
 
-[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.5...HEAD
+[0.3.5]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.1...v0.3.2
