@@ -56,7 +56,13 @@ pub fn set_errno(Errno(errno): Errno) {
 
 extern "C" {
     #[cfg_attr(
-        any(target_os = "macos", target_os = "ios", target_os = "freebsd"),
+        any(
+            target_os = "macos",
+            target_os = "ios",
+            target_os = "tvos",
+            target_os = "watchos",
+            target_os = "freebsd"
+        ),
         link_name = "__error"
     )]
     #[cfg_attr(
