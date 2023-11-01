@@ -13,7 +13,7 @@
 // except according to those terms.
 
 use core::str;
-use libc::{self, c_char, c_int, size_t, strlen};
+use libc::{self, c_int, size_t, strerror_r, strlen};
 
 use crate::Errno;
 
@@ -56,5 +56,4 @@ pub fn set_errno(Errno(new_errno): Errno) {
 
 extern "C" {
     fn __errno_location() -> *mut c_int;
-    fn strerror_r(errnum: c_int, buf: *mut c_char, buflen: size_t) -> c_int;
 }
