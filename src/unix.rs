@@ -71,7 +71,8 @@ extern "C" {
             target_os = "netbsd",
             target_os = "bitrig",
             target_os = "android",
-            target_os = "espidf"
+            target_os = "espidf",
+            target_env = "newlib"
         ),
         link_name = "__errno"
     )]
