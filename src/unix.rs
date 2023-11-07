@@ -72,7 +72,7 @@ extern "C" {
             target_os = "bitrig",
             target_os = "android",
             target_os = "espidf",
-            target_os = "vita"
+            target_env = "newlib"
         ),
         link_name = "__errno"
     )]
