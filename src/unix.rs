@@ -30,8 +30,13 @@ where
 {
     let mut buf = [0u8; 1024];
     let c_str = unsafe {
-        if strerror_r(err.0, buf.as_mut_ptr() as *mut _, buf.len() as size_t) < 0 {
-            let fm_err = errno();
+        let rc = strerror_r(err.0, buf.as_mut_ptr() as *mut _, buf.len() as size_t);
+        if rc != 0 {
+            // Handle negative return codes for compatibility with glibc < 2.13
+            let fm_err = match rc < 0 {
+                true => errno(),
+                false => Errno(rc),
+            };
             if fm_err != Errno(libc::ERANGE) {
                 return callback(Err(fm_err));
             }
