@@ -1,5 +1,10 @@
 # [Unreleased]
 
+# [0.3.7] - 2023-11-15
+
+- Fix `to_string()` handling for unknown error codes
+  [#88](https://github.com/lambda-fairy/rust-errno/pull/88)
+
 # [0.3.6] - 2023-11-07
 
 - Add support for tvOS and watchOS
@@ -70,7 +75,8 @@
 - Optionally support no_std
   [#31](https://github.com/lambda-fairy/rust-errno/pull/31)
 
-[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.6...HEAD
+[Unreleased]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.7...HEAD
+[0.3.7]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/lambda-fairy/rust-errno/compare/v0.3.3...v0.3.4
