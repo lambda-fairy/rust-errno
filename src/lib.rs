@@ -130,6 +130,8 @@ fn check_description() {
 
     let errno_code = if cfg!(target_os = "haiku") {
         -2147483633
+    } else if cfg!(target_os = "hurd") {
+        1073741825
     } else {
         1
     };
