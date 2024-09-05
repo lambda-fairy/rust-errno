@@ -51,6 +51,22 @@ jobs:
       - name: Test (all features)
         run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
 
+  emscripten:
+    name: Test Emscripten
+    runs-on: ubuntu-latest
+    container: emscripten/emsdk:latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-unknown-emscripten
+      - name: Test (no features)
+        run: CARGO_TARGET_WASM32_UNKNOWN_EMSCRIPTEN_RUNNER=node cargo test --target wasm32-unknown-emscripten --no-default-features
+      - name: Test (all features)
+        run: CARGO_TARGET_WASM32_UNKNOWN_EMSCRIPTEN_RUNNER=node cargo test --target wasm32-unknown-emscripten --all-features
+
 
   lints:
     name: Rustfmt & Clippy
