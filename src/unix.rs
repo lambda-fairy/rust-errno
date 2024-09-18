@@ -91,7 +91,8 @@ extern "C" {
             target_os = "linux",
             target_os = "hurd",
             target_os = "redox",
-            target_os = "dragonfly"
+            target_os = "dragonfly",
+            target_os = "emscripten",
         ),
         link_name = "__errno_location"
     )]
