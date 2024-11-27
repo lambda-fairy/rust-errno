@@ -24,9 +24,11 @@ jobs:
         uses: dtolnay/rust-toolchain@master
         with:
           toolchain: ${{ matrix.rust }}
-      - name: Override libc version (Rust 1.56 only)
+      - name: Pin to old dependency versions (Rust 1.56 only)
         if: matrix.rust == '1.56'
-        run: cargo update -p libc --precise 0.2.163
+        run: |
+          cargo update -p libc --precise 0.2.163
+          cargo update -p windows-sys --precise 0.52.0
       - name: Setup cache
         uses: Swatinem/rust-cache@v2
       - name: Test (no features)
