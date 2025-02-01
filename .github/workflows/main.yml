@@ -46,15 +46,15 @@ jobs:
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@nightly
         with:
-          targets: wasm32-wasi
+          targets: wasm32-wasip2
       - name: Install wasmtime
         run: |
           curl https://wasmtime.dev/install.sh -sSf | bash
           echo "$HOME/.wasmtime/bin" >> $GITHUB_PATH
       - name: Test (no features)
-        run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --no-default-features
+        run: CARGO_TARGET_WASM32_WASIP2_RUNNER=wasmtime cargo test --target wasm32-wasip2 --no-default-features
       - name: Test (all features)
-        run: CARGO_TARGET_WASM32_WASI_RUNNER=wasmtime cargo test --target wasm32-wasi --all-features
+        run: CARGO_TARGET_WASM32_WASIP2_RUNNER=wasmtime cargo test --target wasm32-wasip2 --all-features
 
   emscripten:
     name: Test Emscripten
