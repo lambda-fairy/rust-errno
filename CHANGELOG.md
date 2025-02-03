@@ -1,5 +1,8 @@
 # [Unreleased]
 
+- Add VxWorks support
+  [#105](https://github.com/lambda-fairy/rust-errno/pull/105)
+
 # [0.3.10] - 2024-11-29
 
 - Update to windows-sys 0.59
