@@ -31,3 +31,7 @@ libc = { version = "0.2", default-features = false }
 [features]
 default = ["std"]
 std = ["libc/std"]
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+check-cfg = ['cfg(target_os, values("cygwin"))']
