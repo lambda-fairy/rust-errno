@@ -32,6 +32,8 @@ libc = { version = "0.2", default-features = false }
 default = ["std"]
 std = ["libc/std"]
 
+# TODO: Remove this exemption when Cygwin support lands in Rust stable
+# https://github.com/rust-lang/rust/pull/134999
 [lints.rust.unexpected_cfgs]
 level = "warn"
 check-cfg = ['cfg(target_os, values("cygwin"))']
