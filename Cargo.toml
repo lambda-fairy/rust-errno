@@ -2,7 +2,7 @@
 
 name = "errno"
 version = "0.3.10"
-authors = ["Chris Wong <lambda.fairy@gmail.com>"]
+authors = ["Chris Wong <lambda.fairy@gmail.com>", "Dan Gohman <dev@sunfishcode.online>"]
 
 license = "MIT OR Apache-2.0"
 edition = "2018"
