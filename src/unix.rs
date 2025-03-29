@@ -96,6 +96,7 @@ extern "C" {
             target_os = "dragonfly",
             target_os = "emscripten",
             target_os = "fuchsia",
+            target_env = "mlibc",
         ),
         link_name = "__errno_location"
     )]
