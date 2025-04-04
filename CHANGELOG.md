@@ -1,5 +1,7 @@
 # [Unreleased]
 
+# [0.3.11] - 2025-04-04
+
 - Add VxWorks support
   [#105](https://github.com/lambda-fairy/rust-errno/pull/105)
 
