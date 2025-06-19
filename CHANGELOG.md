@@ -1,5 +1,10 @@
 # [Unreleased]
 
+# [0.3.13] - 2025-06-19
+
+- Update windows-sys requirement from >=0.52, <=0.59 to >=0.52, <=0.60
+  [#113](https://github.com/lambda-fairy/rust-errno/pull/113)
+
 # [0.3.12] - 2025-05-12
 
 - Issue a better error message if the target is unsupported.
