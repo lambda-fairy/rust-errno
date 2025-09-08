@@ -16,7 +16,7 @@ rust-version = "1.56"
 libc = { version = "0.2", default-features = false }
 
 [target.'cfg(windows)'.dependencies.windows-sys]
-version = ">=0.52, <=0.60"
+version = ">=0.52, <=0.61"
 features = [
   "Win32_Foundation",
   "Win32_System_Diagnostics_Debug",
