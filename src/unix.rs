@@ -95,6 +95,7 @@ extern "C" {
             target_os = "redox",
             target_os = "dragonfly",
             target_os = "emscripten",
+            target_os = "fuchsia",
         ),
         link_name = "__errno_location"
     )]
