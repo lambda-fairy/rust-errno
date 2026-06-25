@@ -15,12 +15,35 @@
 use core::char::{self, REPLACEMENT_CHARACTER};
 use core::ptr;
 use core::str;
-use windows_sys::Win32::Foundation::{GetLastError, SetLastError, WIN32_ERROR};
-use windows_sys::Win32::System::Diagnostics::Debug::{
-    FormatMessageW, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS,
-};
 
 use crate::Errno;
+
+/// Insert sequences in the message definition such as %1 are to be ignored and passed through to the output buffer unchanged.
+///
+/// This flag is useful for fetching a message for later formatting. If this flag is set, the `arguments` parameter is ignored.
+const FORMAT_MESSAGE_IGNORE_INSERTS: u32 = 512;
+/// The function should search the system message-table resource(s) for the requested message.
+///
+/// If this flag is specified, an application can pass the result of the GetLastError function to retrieve the message text for a system-defined error.
+const FORMAT_MESSAGE_FROM_SYSTEM: u32 = 4096;
+
+#[link(name = "kernel32")]
+extern "system" {
+    /// <https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-formatmessagew>
+    fn FormatMessageW(
+        flags: u32,
+        source: *const core::ffi::c_void,
+        message_id: u32,
+        language_id: u32,
+        buffer: *mut u16,
+        size: u32,
+        arguments: *const *const i8,
+    ) -> u32;
+    /// <https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-getlasterror>
+    fn GetLastError() -> u32;
+    /// <https://learn.microsoft.com/en-us/windows/win32/api/errhandlingapi/nf-errhandlingapi-setlasterror>
+    fn SetLastError(err_code: u32);
+}
 
 fn from_utf16_lossy<'a>(input: &[u16], output: &'a mut [u8]) -> &'a str {
     let mut output_len = 0;
@@ -77,5 +100,5 @@ pub fn errno() -> Errno {
 }
 
 pub fn set_errno(Errno(errno): Errno) {
-    unsafe { SetLastError(errno as WIN32_ERROR) }
+    unsafe { SetLastError(errno as u32) }
 }
