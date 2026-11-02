@@ -102,7 +102,10 @@ extern "C" {
         link_name = "__errno_location"
     )]
     #[cfg_attr(target_os = "aix", link_name = "_Errno")]
-    #[cfg_attr(target_os = "nto", link_name = "__get_errno_ptr")]
+    #[cfg_attr(
+        any(target_os = "nto", target_os = "qnx"),
+        link_name = "__get_errno_ptr"
+    )]
     // Newer libc versions re-export `c_int` from `std` which is incompatible
     // with Rust < 1.64. However, this is not actually a problem as users can
     // use an older `libc`.
